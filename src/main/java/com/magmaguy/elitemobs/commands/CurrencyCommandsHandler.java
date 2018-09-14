@@ -20,7 +20,9 @@ import com.magmaguy.elitemobs.config.EconomySettingsConfig;
 import com.magmaguy.elitemobs.economy.EconomyHandler;
 import com.magmaguy.elitemobs.economy.UUIDFilter;
 import com.magmaguy.elitemobs.playerdata.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -35,9 +37,10 @@ import static org.bukkit.Bukkit.getServer;
 public class CurrencyCommandsHandler {
 
     public static void payCommand(String playerName, double amount) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
 
         if (amount > 0)
-            EconomyHandler.addCurrency(UUIDFilter.guessUUI(playerName), amount);
+            EconomyHandler.addCurrency(player, amount);
 
 
     }
@@ -46,13 +49,13 @@ public class CurrencyCommandsHandler {
 
         try {
 
-            if (Double.parseDouble(args[2]) > 0 && Integer.parseInt(args[2]) <= EconomyHandler.checkCurrency(UUIDFilter.guessUUI(commandSender.getName()))) {
+            if (Double.parseDouble(args[2]) > 0 && Integer.parseInt(args[2]) <= EconomyHandler.checkCurrency(commandSender)) {
 
                 payCommand(args[1], Integer.parseInt(args[2]));
                 subtractCommand(commandSender.getName(), Integer.parseInt(args[2]));
 
                 commandSender.sendMessage("You have paid " + args[2] + " " + ConfigValues.economyConfig.get("Currency name") + " to " + args[1]);
-                commandSender.sendMessage("You now have " + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(commandSender.getName())) + " " + ConfigValues.economyConfig.get("Currency name"));
+                commandSender.sendMessage("You now have " + EconomyHandler.checkCurrency(commandSender) + " " + ConfigValues.economyConfig.get("Currency name"));
 
                 Player recipient = getServer().getPlayer(args[1]);
                 recipient.sendMessage("You have received " + args[2] + " " + ConfigValues.economyConfig.get("Currency name") + " from " + commandSender.getDisplayName());
@@ -72,8 +75,8 @@ public class CurrencyCommandsHandler {
     }
 
     public static void addCommand(String playerName, double amount) {
-
-        EconomyHandler.addCurrency(UUIDFilter.guessUUI(playerName), amount);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        EconomyHandler.addCurrency(player, amount);
 
     }
 
@@ -84,7 +87,7 @@ public class CurrencyCommandsHandler {
             addCommand(args[1], Integer.parseInt(args[2]));
 
             commandSender.sendMessage("You have added " + args[2] + " to " + args[1]);
-            commandSender.sendMessage("They now have " + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(commandSender.getName())));
+            commandSender.sendMessage("They now have " + EconomyHandler.checkCurrency((Player) commandSender));
 
         } catch (Exception e) {
 
@@ -95,8 +98,8 @@ public class CurrencyCommandsHandler {
     }
 
     public static void subtractCommand(String playerName, double amount) {
-
-        EconomyHandler.subtractCurrency(UUIDFilter.guessUUI(playerName), amount);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        EconomyHandler.subtractCurrency(player, amount);
 
     }
 
@@ -107,7 +110,7 @@ public class CurrencyCommandsHandler {
             subtractCommand(args[1], Integer.parseInt(args[2]));
 
             commandSender.sendMessage("You have subtracted " + args[2] + " from " + args[1]);
-            commandSender.sendMessage("They now have " + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(commandSender.getName())));
+            commandSender.sendMessage("They now have " + EconomyHandler.checkCurrency((Player) commandSender));
 
         } catch (Exception e) {
 
@@ -118,8 +121,8 @@ public class CurrencyCommandsHandler {
     }
 
     public static void setCommand(String playerName, double amount) {
-
-        EconomyHandler.setCurrency(UUIDFilter.guessUUI(playerName), amount);
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        EconomyHandler.setCurrency(player, amount);
 
     }
 
@@ -139,8 +142,8 @@ public class CurrencyCommandsHandler {
     }
 
     public static Double checkCommand(String playerName) {
-
-        return EconomyHandler.checkCurrency(UUIDFilter.guessUUI(playerName));
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        return EconomyHandler.checkCurrency(player);
 
     }
 
@@ -156,8 +159,8 @@ public class CurrencyCommandsHandler {
     }
 
     public static Double walletCommand(String playerName) {
-
-        return EconomyHandler.checkCurrency(UUIDFilter.guessUUI(playerName));
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        return EconomyHandler.checkCurrency(player);
 
     }
     public static void walletCommand(CommandSender commandSender, String[] args) {
@@ -202,7 +205,7 @@ public class CurrencyCommandsHandler {
 
         }
 
-        commandSender.sendMessage(ChatColor.RED + "[EliteMobs] " + ChatColor.DARK_GREEN + ConfigValues.economyConfig.get(EconomySettingsConfig.CURRENCY_NAME) + " High Score:");
+        commandSender.sendMessage(ChatColor.RED + "[EliteMobs] " + ChatColor.DARK_GREEN + EconomyHandler.getCurrencyName() + " High Score:");
 
         int iterationAmount = 10;
 
@@ -220,7 +223,7 @@ public class CurrencyCommandsHandler {
             int place = i + 1;
 
             commandSender.sendMessage(ChatColor.GREEN + "#" + place + " " + ChatColor.WHITE + name + " with " +
-                    ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + ConfigValues.economyConfig.get(EconomySettingsConfig.CURRENCY_NAME));
+                    ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + EconomyHandler.getCurrencyName());
 
         }
 

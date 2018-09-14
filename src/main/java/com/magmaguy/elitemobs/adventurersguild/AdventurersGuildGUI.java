@@ -148,8 +148,8 @@ public class AdventurersGuildGUI implements Listener {
                         ChatColorConverter.chatColorConverter("&f&m-------------------------------"),
                         ChatColorConverter.chatColorConverter("&6This is the next rank you can unlock"),
                         ChatColorConverter.chatColorConverter("&aSelect it when you're ready!"),
-                        ChatColorConverter.chatColorConverter("&6Costs " + priceString + " &6" + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME)),
-                        ChatColorConverter.chatColorConverter("&fYou have &a" + PlayerData.playerCurrency.get(player.getUniqueId()) + " &f" + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME)),
+                        ChatColorConverter.chatColorConverter("&6Costs " + priceString + " &6" + EconomyHandler.getCurrencyName()),
+                        ChatColorConverter.chatColorConverter("&fYou have &a" + PlayerData.playerCurrency.get(player.getUniqueId()) + " &f" + EconomyHandler.getCurrencyName()),
                         ChatColorConverter.chatColorConverter("&f&m-------------------------------"),
                         lootBonus(rank),
                         mobSpawning(rank),
@@ -358,13 +358,13 @@ public class AdventurersGuildGUI implements Listener {
         }
 
         if (selectedTier == maxTier + 1) {
-            if (EconomyHandler.checkCurrency(event.getWhoClicked().getUniqueId()) < tierPriceCalculator(selectedTier))
+            if (EconomyHandler.checkCurrency((Player) event.getWhoClicked()) < tierPriceCalculator(selectedTier))
                 event.getWhoClicked().sendMessage("[EliteMobs] You don't have enough Elite Coins! Sell some Elite Mob loot to [/em shop]!");
             else {
-                EconomyHandler.subtractCurrency(event.getWhoClicked().getUniqueId(), tierPriceCalculator(selectedTier));
+                EconomyHandler.subtractCurrency((Player) event.getWhoClicked(), tierPriceCalculator(selectedTier));
                 PlayerData.playerMaxGuildRank.put(event.getWhoClicked().getUniqueId(), selectedTier);
                 event.getWhoClicked().sendMessage(ChatColorConverter.chatColorConverter("&aYou have unlocked the " + rankNamer(selectedTier) + " &arank for " +
-                        tierPriceCalculator(selectedTier) + " " + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME) + ". \n&6Happy hunting!"));
+                        tierPriceCalculator(selectedTier) + " " + EconomyHandler.getCurrencyName() + ". \n&6Happy hunting!"));
                 difficultyMenu((Player) event.getWhoClicked());
                 Bukkit.broadcastMessage(ChatColorConverter.chatColorConverter(
                         ((Player) event.getWhoClicked()).getDisplayName() + " has reached the " + rankNamer(selectedTier) + " &fguild rank!"));

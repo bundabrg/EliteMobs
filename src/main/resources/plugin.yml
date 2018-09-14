@@ -2,7 +2,7 @@ name: EliteMobs
 version: 6.6.0
 author: MagmaGuy
 main: com.magmaguy.elitemobs.EliteMobs
-softdepend: [Multiverse-Core]
+softdepend: [Multiverse-Core, Vault]
 
 commands:
   elitemobs:

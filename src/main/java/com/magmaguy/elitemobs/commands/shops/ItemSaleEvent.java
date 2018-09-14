@@ -64,7 +64,7 @@ public class ItemSaleEvent implements Listener {
 
         double amountDeduced = ItemWorthCalculator.determineResaleWorth(itemStack);
 
-        EconomyHandler.addCurrency(UUIDFilter.guessUUI(player.getName()), amountDeduced);
+        EconomyHandler.addCurrency(player, amountDeduced);
 
         if (event.getCurrentItem().getAmount() == 1) {
 

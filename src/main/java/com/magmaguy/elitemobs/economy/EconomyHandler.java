@@ -15,10 +15,12 @@
 
 package com.magmaguy.elitemobs.economy;
 
-import com.magmaguy.elitemobs.config.PlayerMoneyData;
-import com.magmaguy.elitemobs.playerdata.PlayerData;
+import com.magmaguy.elitemobs.config.ConfigValues;
+import com.magmaguy.elitemobs.config.EconomySettingsConfig;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.UUID;
 
@@ -27,84 +29,43 @@ import java.util.UUID;
  */
 public class EconomyHandler {
 
-    private static PlayerMoneyData playerMoneyData = new PlayerMoneyData();
+    private static EconomyProvider economyProvider;
 
-    public static void addCurrency(UUID user, double amount) {
+    // Initialize Economy
+    public static void initialize() {
 
-        if (!checkUserExists(user)) createUser(user);
-
-        PlayerData.playerCurrency.put(user, roundDecimals(checkCurrency(user) + amount));
-        PlayerData.playerCurrencyChanged = true;
-
-    }
-
-
-    public static void subtractCurrency(UUID user, double amount) {
-
-        if (!checkUserExists(user)) createUser(user);
-
-        PlayerData.playerCurrency.put(user, roundDecimals(checkCurrency(user) - amount));
-        PlayerData.playerCurrencyChanged = true;
-
-    }
-
-    public static void setCurrency(UUID user, double amount) {
-
-        if (!checkUserExists(user)) createUser(user);
-
-        PlayerData.playerCurrency.put(user, roundDecimals(amount));
-        PlayerData.playerCurrencyChanged = true;
-
-    }
-
-    public static double checkCurrency(UUID user) {
-
-        if (!checkUserExists(user))
-            createUser(user);
-
-        return PlayerData.playerCurrency.get(user);
-
-    }
-
-    private static void createUser(UUID uuid) {
-
-        PlayerData.playerCurrency.put(uuid, 0.0);
-        PlayerData.playerCurrencyChanged = true;
-
-    }
-
-    private static boolean checkUserExists(UUID uuid) {
-
-        checkUserIsCached(uuid);
-        return PlayerData.playerCurrency.containsKey(uuid);
-
-    }
-
-    private static void checkUserIsCached(UUID uuid) {
-
-        boolean playerIsOnline = false;
-
-        for (Player player : Bukkit.getOnlinePlayers())
-            if(player.getUniqueId().equals(uuid)){
-                playerIsOnline = true;
-                break;
+        // Check for Vault
+        if (ConfigValues.economyConfig.getBoolean(EconomySettingsConfig.USE_VAULT)) {
+            if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
+                RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+                if (rsp != null) {
+                    economyProvider = new VaultEconomyProvider(rsp.getProvider());
+                    return;
+                }
             }
-
-
-        if (!PlayerData.playerDisplayName.containsKey(uuid) || playerIsOnline &&
-                !PlayerData.playerDisplayName.get(uuid).equals(Bukkit.getPlayer(uuid).getDisplayName())) {
-
-            PlayerData.playerDisplayName.put(uuid, Bukkit.getPlayer(uuid).getDisplayName());
-            PlayerData.playerCacheChanged = true;
-
         }
 
+        // Use EliteMobsEconomy
+        economyProvider = new EliteMobsEconomyProvider();
     }
 
-    private static double roundDecimals(double rawValue) {
-
-        return (double) Math.round(rawValue * 100) / 100;
-
+    public static void addCurrency(OfflinePlayer user, double amount) {
+        economyProvider.addCurrency(user, amount);
     }
 
+    public static void subtractCurrency(OfflinePlayer user, double amount) {
+        economyProvider.subtractCurrency(user, amount);
+    }
+
+    public static void setCurrency(OfflinePlayer user, double amount) {
+        economyProvider.setCurrency(user, amount);
+    }
+
+    public static double checkCurrency(OfflinePlayer user) {
+        return economyProvider.checkCurrency(user);
+    }
+
+    public static String getCurrencyName() {
+        return economyProvider.getCurrencyName();
+    }
 }

@@ -27,6 +27,7 @@ public class EconomySettingsConfig {
 
     public static final String CONFIG_NAME = "EconomySettings.yml";
     public static final String ENABLE_ECONOMY = "Enable economy";
+    public static final String USE_VAULT = "Use Vault";
     public static final String RESALE_VALUE = "Item resale value (percentage)";
     public static final String LOWEST_PROCEDURALLY_SIMULATED_LOOT = "Procedurally Generated Loot.Lowest simulated elite mob level loot";
     public static final String HIGHEST_PROCEDURALLY_SIMULATED_LOOT = "Procedurally Generated Loot.Highest simulated elite mob level loot";
@@ -172,6 +173,7 @@ public class EconomySettingsConfig {
         double goldWoodLeatherLevel = DamageAdjuster.GOLD_WOOD_LEATHER_TIER_LEVEL + 10;
 
         configuration.addDefault(ENABLE_ECONOMY, true);
+        configuration.addDefault(USE_VAULT, false);
         configuration.addDefault(RESALE_VALUE, 5);
         configuration.addDefault(LOWEST_PROCEDURALLY_SIMULATED_LOOT, 1);
         configuration.addDefault(HIGHEST_PROCEDURALLY_SIMULATED_LOOT, 250);

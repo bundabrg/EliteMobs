@@ -134,9 +134,9 @@ public class ShopHandler implements Listener {
                 player.sendMessage("Your inventory is full! You can't buy items until you get some free space.");
                 player.closeInventory();
 
-            } else if (EconomyHandler.checkCurrency(UUIDFilter.guessUUI(player.getName())) >= itemValue) {
+            } else if (EconomyHandler.checkCurrency(player) >= itemValue) {
                 //player has enough money
-                EconomyHandler.subtractCurrency(UUIDFilter.guessUUI(player.getName()), itemValue);
+                EconomyHandler.subtractCurrency(player, itemValue);
                 player.getInventory().addItem(itemStack);
                 populateShop(event.getInventory());
 

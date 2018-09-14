@@ -68,8 +68,8 @@ public class SharedShopElements {
             @Override
             public void run() {
 
-                player.sendMessage(ChatColor.GREEN + "You have bought " + itemDisplayName + " for " + ChatColor.DARK_GREEN + itemValue + " " + ChatColor.GREEN + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
-                player.sendMessage(ChatColor.GREEN + "You have " + ChatColor.DARK_GREEN + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(player.getName())) + " " + ChatColor.GREEN + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+                player.sendMessage(ChatColor.GREEN + "You have bought " + itemDisplayName + " for " + ChatColor.DARK_GREEN + itemValue + " " + ChatColor.GREEN +EconomyHandler.getCurrencyName());
+                player.sendMessage(ChatColor.GREEN + "You have " + ChatColor.DARK_GREEN + EconomyHandler.checkCurrency(player) + " " + ChatColor.GREEN + EconomyHandler.getCurrencyName());
 
             }
 
@@ -86,8 +86,8 @@ public class SharedShopElements {
             public void run() {
 
                 player.sendMessage(ChatColor.RED + "You don't have enough " + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME) + "!");
-                player.sendMessage(ChatColor.GREEN + "You have " + ChatColor.DARK_GREEN + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(player.getName())) + " " + ChatColor.GREEN + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
-                player.sendMessage(ChatColor.GREEN + "That item cost " + ChatColor.DARK_GREEN + itemValue + " " + ChatColor.GREEN + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME) + ".");
+                player.sendMessage(ChatColor.GREEN + "You have " + ChatColor.DARK_GREEN + EconomyHandler.checkCurrency(player) + " " + ChatColor.GREEN + EconomyHandler.getCurrencyName());
+                player.sendMessage(ChatColor.GREEN + "That item cost " + ChatColor.DARK_GREEN + itemValue + " " + ChatColor.GREEN + EconomyHandler.getCurrencyName() + ".");
 
             }
 
@@ -100,14 +100,14 @@ public class SharedShopElements {
 
     public static void sellMessage(Player player, String itemDisplayName, double amountDeduced) {
 
-        player.sendMessage("You have sold " + itemDisplayName + " for " + amountDeduced + " " + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+        player.sendMessage("You have sold " + itemDisplayName + " for " + amountDeduced + " " + EconomyHandler.getCurrencyName());
 
         new BukkitRunnable() {
 
             @Override
             public void run() {
 
-                player.sendMessage("You have " + EconomyHandler.checkCurrency(UUIDFilter.guessUUI(player.getName())) + " " + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+                player.sendMessage("You have " + EconomyHandler.checkCurrency(player) + " " + EconomyHandler.getCurrencyName());
 
             }
 

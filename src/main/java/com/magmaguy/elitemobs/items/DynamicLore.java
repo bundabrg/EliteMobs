@@ -19,6 +19,7 @@ import com.magmaguy.elitemobs.ChatColorConverter;
 import com.magmaguy.elitemobs.config.ConfigValues;
 import com.magmaguy.elitemobs.config.EconomySettingsConfig;
 import com.magmaguy.elitemobs.config.ItemsDropSettingsConfig;
+import com.magmaguy.elitemobs.economy.EconomyHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -162,7 +163,7 @@ public class DynamicLore {
 
         String worthLore = ConfigValues.itemsDropSettingsConfig.getString(ItemsDropSettingsConfig.LORE_WORTH);
         worthLore = worthLore.replace("$worth", worthOrResale + "");
-        worthLore = worthLore.replace("$currencyName", ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+        worthLore = worthLore.replace("$currencyName", EconomyHandler.getCurrencyName());
         worthLore = ChatColorConverter.chatColorConverter(worthLore);
 
         return worthLore;
@@ -173,7 +174,7 @@ public class DynamicLore {
 
         String resaleLore = ConfigValues.itemsDropSettingsConfig.getString(ItemsDropSettingsConfig.LORE_RESALE_WORTH);
         resaleLore = resaleLore.replace("$resale", resale + "");
-        resaleLore = resaleLore.replace("$currencyName", ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+        resaleLore = resaleLore.replace("$currencyName", EconomyHandler.getCurrencyName());
         resaleLore = ChatColorConverter.chatColorConverter(resaleLore);
 
         return resaleLore;

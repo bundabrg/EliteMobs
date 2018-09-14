@@ -1,3 +1,8 @@
+# Fork Details
+This fork holds my personal changes to this plugin. Presently:
+* Vault Integration
+
+
 # EliteMobs
 
 This is the GitHub project for the Minecraft plugin EliteMobs (Spigot page can be seen here: https://www.spigotmc.org/resources/elitemobs.40090/)

@@ -20,6 +20,7 @@ import com.magmaguy.elitemobs.config.ConfigValues;
 import com.magmaguy.elitemobs.config.DefaultConfig;
 import com.magmaguy.elitemobs.config.EconomySettingsConfig;
 import com.magmaguy.elitemobs.config.ItemsUniqueConfig;
+import com.magmaguy.elitemobs.economy.EconomyHandler;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -203,7 +204,7 @@ public class UniqueItemConstructor {
 
         List<String> newLore = new ArrayList<>();
         newLore.addAll(itemStack.getItemMeta().getLore());
-        newLore.add("Worth " + ItemWorthCalculator.determineItemWorth(itemStack) + " " + ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+        newLore.add("Worth " + ItemWorthCalculator.determineItemWorth(itemStack) + " " + EconomyHandler.getCurrencyName());
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(newLore);

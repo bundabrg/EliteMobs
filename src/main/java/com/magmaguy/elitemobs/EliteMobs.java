@@ -23,6 +23,7 @@ import com.magmaguy.elitemobs.commands.CommandHandler;
 import com.magmaguy.elitemobs.config.ConfigValues;
 import com.magmaguy.elitemobs.config.DefaultConfig;
 import com.magmaguy.elitemobs.config.ValidMobsConfig;
+import com.magmaguy.elitemobs.economy.EconomyHandler;
 import com.magmaguy.elitemobs.events.EventLauncher;
 import com.magmaguy.elitemobs.items.CustomItemConstructor;
 import com.magmaguy.elitemobs.items.UniqueItemConstructor;
@@ -57,6 +58,9 @@ public class EliteMobs extends JavaPlugin {
         //Load loot from config
         ConfigValues.intializeConfigurations();
         ConfigValues.initializeConfigValues();
+
+        // Initialize Economy
+        EconomyHandler.initialize();
 
         //Parse loot
         CustomItemConstructor superDrops = new CustomItemConstructor();

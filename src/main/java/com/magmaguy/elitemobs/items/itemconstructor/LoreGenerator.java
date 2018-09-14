@@ -3,6 +3,7 @@ package com.magmaguy.elitemobs.items.itemconstructor;
 import com.magmaguy.elitemobs.ChatColorConverter;
 import com.magmaguy.elitemobs.MetadataHandler;
 import com.magmaguy.elitemobs.config.*;
+import com.magmaguy.elitemobs.economy.EconomyHandler;
 import com.magmaguy.elitemobs.items.ItemTierFinder;
 import com.magmaguy.elitemobs.items.ItemWorthCalculator;
 import com.magmaguy.elitemobs.items.ObfuscatedSignatureLoreData;
@@ -260,7 +261,7 @@ public class LoreGenerator {
 
         return ConfigValues.itemsDropSettingsConfig.getString(ItemsDropSettingsConfig.LORE_WORTH)
                 .replace("$worth", ItemWorthCalculator.determineItemWorth(material, enchantmentMap, potionList) + "")
-                .replace("$currencyName", ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+                .replace("$currencyName", EconomyHandler.getCurrencyName());
 
     }
 
@@ -268,7 +269,7 @@ public class LoreGenerator {
 
         return ConfigValues.itemsDropSettingsConfig.getString(ItemsDropSettingsConfig.LORE_WORTH)
                 .replace("$worth", ItemWorthCalculator.determineItemWorth(material, enchantmentMap) + "")
-                .replace("$currencyName", ConfigValues.economyConfig.getString(EconomySettingsConfig.CURRENCY_NAME));
+                .replace("$currencyName", EconomyHandler.getCurrencyName());
 
     }
 
