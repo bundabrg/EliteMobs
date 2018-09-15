@@ -49,18 +49,32 @@ public class EconomyHandler {
         economyProvider = new EliteMobsEconomyProvider();
     }
 
+    public static void addCurrency(UUID user, double amount) {
+        addCurrency(Bukkit.getPlayer(user), amount);
+    }
     public static void addCurrency(OfflinePlayer user, double amount) {
         economyProvider.addCurrency(user, amount);
     }
 
+
+    public static void subtractCurrency(UUID user, double amount) {
+        subtractCurrency(Bukkit.getPlayer(user), amount);
+    }
     public static void subtractCurrency(OfflinePlayer user, double amount) {
         economyProvider.subtractCurrency(user, amount);
+    }
+
+    public static void setCurrency(UUID user, double amount) {
+        setCurrency(Bukkit.getPlayer(user), amount);
     }
 
     public static void setCurrency(OfflinePlayer user, double amount) {
         economyProvider.setCurrency(user, amount);
     }
 
+    public static double checkCurrency(UUID user) {
+        return checkCurrency(Bukkit.getPlayer(user));
+    }
     public static double checkCurrency(OfflinePlayer user) {
         return economyProvider.checkCurrency(user);
     }

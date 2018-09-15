@@ -55,55 +55,60 @@ public class EliteMobs extends JavaPlugin {
         //Enable stats
         Metrics metrics = new Metrics(this);
 
-        //Load loot from config
-        ConfigValues.intializeConfigurations();
-        ConfigValues.initializeConfigValues();
+        // Run after everything is loaded (Safer)
+        getServer().getScheduler().runTask(this, new Runnable() {
+                    @Override
+                    public void run() {
+                        //Load loot from config
+                        ConfigValues.intializeConfigurations();
+                        ConfigValues.initializeConfigValues();
 
-        // Initialize Economy
-        EconomyHandler.initialize();
+                        // Initialize Economy
+                        EconomyHandler.initialize();
 
-        //Parse loot
-        CustomItemConstructor superDrops = new CustomItemConstructor();
-        superDrops.superDropParser();
+                        //Parse loot
+                        CustomItemConstructor superDrops = new CustomItemConstructor();
+                        superDrops.superDropParser();
 
-        UniqueItemConstructor uniqueItemConstructor = new UniqueItemConstructor();
-        uniqueItemConstructor.intializeUniqueItems();
+                        UniqueItemConstructor uniqueItemConstructor = new UniqueItemConstructor();
+                        uniqueItemConstructor.intializeUniqueItems();
 
-        //Hook up all listeners, some depend on config
-        EventsRegistrer.registerEvents();
+                        //Hook up all listeners, some depend on config
+                        EventsRegistrer.registerEvents();
 
-        //Launch the local data cache
-        PlayerData.initializePlayerData();
-        PlayerData.synchronizeDatabases();
+                        //Launch the local data cache
+                        PlayerData.initializePlayerData();
+                        PlayerData.synchronizeDatabases();
 
-        //Get world list
-        worldScanner();
+                        //Get world list
+                        worldScanner();
 
-        //Start the repeating tasks such as scanners
-        launchRunnables();
+                        //Start the repeating tasks such as scanners
+                        launchRunnables();
 
-        //Commands
-        this.getCommand("elitemobs").setExecutor(new CommandHandler());
+                        //Commands
+                        getCommand("elitemobs").setExecutor(new CommandHandler());
 
-        //launch events
-        EventLauncher eventLauncher = new EventLauncher();
-        eventLauncher.eventRepeatingTask();
+                        //launch events
+                        EventLauncher eventLauncher = new EventLauncher();
+                        eventLauncher.eventRepeatingTask();
 
-        //launch internal clock for attack cooldown
-        DamageAdjuster.launchInternalClock();
+                        //launch internal clock for attack cooldown
+                        DamageAdjuster.launchInternalClock();
+
+                        /*
+                        Metadata wiper repeating task
+                         */
+                        MetadataHandler.metadataWiper();
+                    }
+                });
 
         /*
         Check for new plugin version
          */
         VersionChecker.updateComparer();
         if (!VersionChecker.pluginIsUpToDate)
-            this.getServer().getPluginManager().registerEvents(new VersionWarner(), this);
-
-        /*
-        Metadata wiper repeating task
-         */
-        MetadataHandler.metadataWiper();
-
+            getServer().getPluginManager().registerEvents(new VersionWarner(), this);
     }
 
     @Override
